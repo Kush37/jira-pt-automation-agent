@@ -1,0 +1,20 @@
+# Core LangChain + DeepAgents
+langchain>=0.2.0
+deepagents>=0.1.0
+
+# LLM provider (choose one or more)
+langchain-openai>=0.1.0
+# If using Anthropic:
+# langchain-anthropic>=0.1.0
+
+# Optional: Tavily for web search (if you plan to add research capability)
+tavily-python>=0.3.0
+
+# k6 execution (we’ll call CLI from Python)
+# No direct Python lib for k6; ensure k6 binary installed in system PATH
+# For subprocess calls:
+subprocess32; python_version<"3.5"
+
+# Utilities
+python-dotenv>=1.0.0   # For managing API keys
+typing-extensions>=4.5.0

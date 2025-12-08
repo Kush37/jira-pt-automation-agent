@@ -73,10 +73,30 @@ postman-to-k6 --version
 ```
 
 ### 6. Configure Environment Variables
+You can either use a `.env` file or export the key directly in your shell.
+
+**Option A: Using `.env` file (Recommended)**
 Create a `.env` file in the root directory and add your OpenAI API key:
 
 ```env
 OPENAI_API_KEY=your_openai_api_key_here
+```
+
+**Option B: Exporting directly in shell**
+
+**Windows (PowerShell):**
+```powershell
+$env:OPENAI_API_KEY="your_openai_api_key_here"
+```
+
+**Windows (CMD):**
+```cmd
+set OPENAI_API_KEY=your_openai_api_key_here
+```
+
+**macOS/Linux:**
+```bash
+export OPENAI_API_KEY=your_openai_api_key_here
 ```
 
 ## Usage

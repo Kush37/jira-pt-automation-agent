@@ -8,7 +8,20 @@ Before running this agent, ensure you have the following installed on your syste
 
 1.  **Python 3.10+**: [Download Python](https://www.python.org/downloads/)
 2.  **Node.js & npm** (Required for `postman-to-k6`): [Download Node.js](https://nodejs.org/)
-3.  **k6** (Load testing tool): [Download k6](https://k6.io/docs/get-started/installation/)
+3.  **k6** (Load testing tool):
+    -   **Windows**:
+        -   Using Winget: `winget install k6 --source winget`
+        -   Using Chocolatey: `choco install k6`
+        -   Or download the MSI installer from [k6.io](https://k6.io/docs/get-started/installation/)
+    -   **macOS**: `brew install k6`
+    -   **Linux**:
+        ```bash
+        sudo gpg -k
+        sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+        echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+        sudo apt-get update
+        sudo apt-get install k6
+        ```
 4.  **OpenAI API Key**: You will need a valid API key from OpenAI.
 
 ## Installation

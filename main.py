@@ -205,7 +205,7 @@ SUBAGENTS = [
         "description": "Executes k6 script safely.",
         "system_prompt": (
             "You run the k6 script with the declared load profile. "
-            "Use safe defaults and log the output path. If environment or endpoints are missing, request human input."
+            "Use safe defaults and log the output path."
         ),
         "tools": [execute_k6_script],
     },
@@ -266,13 +266,29 @@ agent = create_deep_agent(
 # -----------------------------------------------------------------------------
 if __name__ == "__main__":
     # Placeholder JIRA Story dict (real system would pass a richer object/context)
+    # jira_story = {
+    #     "story_number": "PROJ-1234",
+    #     "title": "Performance test the Provided Collection with expected peak load",
+    #     "description": "First run a smoke test with 1user. Ensure the script from the provided collection can handle 50 VUs, 2 Hours, with rampup and Rampdown as 10 Minutes duration; SLA: p95 < 300ms.",
+    #     "comments": ["Feel free to run the test once the script is ready, no time constraints", "Postman attached"],
+    #     "attachments": [{"type": "postman_collection", "path": "collection.json"}],
+    # }
+
     jira_story = {
-        "story_number": "PROJ-1234",
-        "title": "Performance test the Provided Collection with expected peak load",
-        "description": "First run a smoke test with 1user. Ensure the script from the provided collection can handle 50 VUs, 2 Hours, with rampup and Rampdown as 10 Minutes duration; SLA: p95 < 300ms.",
-        "comments": ["Feel free to run the test once the script is ready, no time constraints", "Postman attached"],
-        "attachments": [{"type": "postman_collection", "path": "collection.json"}],
+  "story_number": "PROJ-1234",
+  "title": "Performance test the provided Postman collection under expected peak load conditions",
+  "description": "Execute a complete performance testing cycle for the provided Postman collection. Start with a smoke test using 1 virtual user to validate script functionality and environment readiness. Convert the attached Postman collection into a performance testing script, ensuring proper handling of headers, authentication, correlations, parameterization, and error validations. Once validated, conduct a load test with 50 Virtual Users for a duration of 2 hours, including a 10-minute ramp-up and 10-minute ramp-down. SLA requirements: p95 < 300ms and error rate < 1%. After execution, generate a detailed performance report covering latency percentiles, throughput, error distribution, system resource usage (if available), stability observations, and bottlenecks.",
+  "comments": [
+    "Feel free to run the test once the script is ready, no time constraints",
+    "Postman attached"
+  ],
+  "attachments": [
+    {
+      "type": "postman_collection",
+      "path": "collection.json"
     }
+  ]
+}
 
     # The DeepAgent will plan and delegate to sub-agents via `task()` based on the prompt.
     result = agent.invoke({"messages": [{"role": "user", "content": f"Run performance testing for:\n{jira_story}"}]})

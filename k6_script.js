@@ -12,14 +12,14 @@ postman[Symbol.for("initial")]({
 export default function() {
   postman[Request]({
     name: "Get Users",
-    id: "cedcee67-ad5e-4282-908f-73773fe6ef5d",
+    id: "a78a70ff-29f3-4225-8e20-2ca5e7a75de1",
     method: "GET",
     address: "https://jsonplaceholder.typicode.com/users"
   });
 
   postman[Request]({
     name: "Create User",
-    id: "899e717b-8030-4b49-8b5c-efb416f38c9f",
+    id: "a4336354-4668-4f29-aed0-35c1a55e7fdd",
     method: "POST",
     address: "https://jsonplaceholder.typicode.com/users",
     data: '{\n  "name": "John Doe",\n  "email": "john@example.com"\n}',
@@ -30,7 +30,7 @@ export default function() {
 
   postman[Request]({
     name: "Update User",
-    id: "330063b7-b3de-44bb-981d-2287bd9cc604",
+    id: "f389a562-2e33-4090-9729-c1b5026434c8",
     method: "PUT",
     address: "https://jsonplaceholder.typicode.com/users/1",
     data: '{\n  "name": "Updated Name",\n  "email": "updated@example.com"\n}',

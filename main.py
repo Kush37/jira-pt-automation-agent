@@ -14,9 +14,10 @@ from deepagents import create_deep_agent
 
 from dotenv import load_dotenv
 from subagents.postman_to_k6 import convert_postman_to_k6
+from subagents.scenario_designer import create_scenario_from_story
 
 
-#Load Environment variables
+#Load environment variables
 load_dotenv()
 
 # -----------------------------------------------------------------------------
@@ -113,14 +114,7 @@ def capture_load_details_from_story(story: Dict[str, Any]) -> Dict[str, Any]:
     """
     Captures load testing details from a JIRA story.
     """
-    print(f"[Capture Load Details] Story fields: {list(story.keys())}")
-    res = {
-        "status": "success",
-        "message": "Load details captured from story (placeholder).",
-        "load_profile": {"vus": 50, "duration": "1m"}  # placeholder only
-    }
-    print(res)
-    return res
+    return create_scenario_from_story(story)
 
 def execute_k6_script(k6_script_path: str, env: Dict[str, Any]) -> Dict[str, Any]:
     """

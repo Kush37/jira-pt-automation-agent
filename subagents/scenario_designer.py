@@ -12,10 +12,10 @@ load_dotenv()
 # Define the output structure we want
 class LoadTestScenario(BaseModel):
     concurrent_users: Optional[int] = Field(description="Number of concurrent users / VUs")
-    test_duration: Optional[str] = Field(description="Duration of the test (e.g., '1h', '30m')")
-    ramp_up_duration: Optional[str] = Field(description="Ramp-up period duration")
-    ramp_down_duration: Optional[str] = Field(description="Ramp-down period duration")
-    target_tph: Optional[int] = Field(description="Target Transactions Per Hour (TPH)")
+    test_duration: Optional[int] = Field(description="Duration of the test in Minutes (e.g., '60', '30')")
+    ramp_up_duration: Optional[int] = Field(description="Ramp-up period duration in Minutes (e.g., '10', '20')")
+    ramp_down_duration: Optional[int] = Field(description="Ramp-down period duration in Minutes (e.g., '10', '20')")
+    target_tph: Optional[int] = Field(description="Target Transactions Per Hour (TPH) in Minutes (e.g., '10', '1000', '2000')")
 
 def create_scenario_from_story(jira_story: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -58,7 +58,7 @@ def create_scenario_from_story(jira_story: Dict[str, Any]) -> Dict[str, Any]:
             5. Target TPH (Transactions Per Hour)
             
             If a value is not explicitly stated but can be reasonably inferred (e.g., "ramp up over 5 mins"), extract it.
-            If a value is completely missing, return null for that field.
+            If a value is completely missing, return -1 for that field.
             
             JIRA Story Details:
             Title: {title}

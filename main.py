@@ -15,6 +15,7 @@ from deepagents import create_deep_agent
 from dotenv import load_dotenv
 from subagents.postman_to_k6 import convert_postman_to_k6
 from subagents.scenario_designer import create_scenario_from_story
+from subagents.k6_smoke_runner import run_k6
 
 
 #Load environment variables
@@ -40,15 +41,18 @@ Goals:
 
 Validation checklist:
 - Postman Collection present in attachments (for API tests)? If missing, request upload/confirmation.
+- Validate the postman collection path
 - Load profile details present or derivable (e.g., VUs, duration, ramping profile)? If missing, ask for human input.
-- SLA present in Description or Comments? If missing, ask for SLA or provide default policy and request approval.
-- Environment/endpoint URLs and authentication details available?
 - Any test data prerequisites described?
 
 Execution outline:
 - Check the JIRA Story details to understand the requirement and plan next steps.
 - Validate Postman collection if present.
+- Validate the postman collection path and ensure the path is used correctly for the later phases
 - Develop k6 script from Postman collection (API flows) if Postman collection is present.
+- Validate the generated k6 script path and ensure the path is used correctly for the later phases
+- Run the a smoke test using k6 script
+- Validate the smoke test results
 - Capture/derive load details from Description/Comments using LLM.
 - Capture SLA from Description/Comments if present.
 - Execute k6 script (when safe; may require HITL approval).
@@ -106,7 +110,7 @@ def develop_k6_script_from_postman(postman_path: str, output_k6_path: str) -> Di
     """
     print(f"[Develop k6 Script] From: {postman_path} -> To: {output_k6_path}")
     convert_postman_to_k6(postman_path, "k6_script.js")
-    res = {"status": "success", "message": "k6 script generated from Postman collection (placeholder)."}
+    res = {"status": "success", "message": "k6 script generated from Postman collection {postman_path}"}
     print(res)
     return res
     
@@ -114,13 +118,17 @@ def capture_load_details_from_story(story: Dict[str, Any]) -> Dict[str, Any]:
     """
     Captures load testing details from a JIRA story.
     """
-    return create_scenario_from_story(story)
+    print("Calling agent to Capture Load Details from Story")
+    res = create_scenario_from_story(story)
+    print(res)
+    return res
 
 def execute_k6_script(k6_script_path: str, env: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Executes a k6 script with the given environment variables.
+    Executes a k6 script.
     """
-    print(f"[Execute k6] Script: {k6_script_path} with env: {env}")
+    print(f"[Execute k6] Script: {k6_script_path} with env:")
+    run_k6(k6_script_path)
     res = {"status": "success", "message": "k6 executed successfully.", "results_path": "/tmp/k6-results.json"}
     print(res)
     return res
@@ -260,10 +268,10 @@ if __name__ == "__main__":
     # Placeholder JIRA Story dict (real system would pass a richer object/context)
     jira_story = {
         "story_number": "PROJ-1234",
-        "title": "Performance test API X with expected peak load",
-        "description": "Ensure API X can handle 50 VUs, 1m duration; SLA: p95 < 300ms.",
-        "comments": ["Consider auth token rotation", "Postman attached"],
-        "attachments": [{"type": "postman_collection", "path": "C:\\Users\\Kushal\\Desktop\\JIRA Automation\\collection.json"}],
+        "title": "Performance test the Provided Collection with expected peak load",
+        "description": "First run a smoke test with 1user. Ensure the script from the provided collection can handle 50 VUs, 2 Hours, with rampup and Rampdown as 10 Minutes duration; SLA: p95 < 300ms.",
+        "comments": ["Feel free to run the test once the script is ready, no time constraints", "Postman attached"],
+        "attachments": [{"type": "postman_collection", "path": "collection.json"}],
     }
 
     # The DeepAgent will plan and delegate to sub-agents via `task()` based on the prompt.
